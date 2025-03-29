@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Hospital</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animated-bg {
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+        .static-bg {
+            background-size: cover;
+        }
+        /* Chatbot Styles */
+        .chat-container {
+            width: 300px;
+            margin: 0 auto;
+            border: 2px solid #ccc;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .chat-box {
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+        .user-message, .bot-message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            background-color: #daf1da;
+            text-align: right;
+        }
+        .bot-message {
+            background-color: #f1f1f1;
+        }
+        .input-area {
+            display: flex;
+        }
+        .input-area input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .input-area button {
+            width: 20%;
+            padding: 10px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        function showPage(pageId) {
+            let sections = document.querySelectorAll("section.page");
+            sections.forEach(section => section.classList.add("hidden"));
+            document.getElementById(pageId).classList.remove("hidden");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            showPage("home");
+        });
+
+        // Chatbot Functions
+        function sendMessage() {
+            const userInput = document.getElementById("userInput").value;
+            if (userInput.trim() === "") return;
+
+            const chatBox = document.getElementById("chatBox");
+
+            // Display user message
+            const userMessageDiv = document.createElement("div");
+            userMessageDiv.classList.add("user-message");
+            userMessageDiv.textContent = userInput;
+            chatBox.appendChild(userMessageDiv);
+
+            // Simulate a bot response
+            setTimeout(() => {
+                const botResponseDiv = document.createElement("div");
+                botResponseDiv.classList.add("bot-message");
+                botResponseDiv.textContent = "Bot: " + generateBotResponse(userInput);
+                chatBox.appendChild(botResponseDiv);
+
+                // Scroll to the bottom of the chat box
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1000);
+
+            // Clear the input field
+            document.getElementById("userInput").value = "";
+        }
+
+        // Simple bot response logic (you can replace this with API logic later)
+        function generateBotResponse(userMessage) {
+            const responses = [
+                "I'm not sure how to answer that.",
+                "Can you please clarify?",
+                "Interesting question!",
+                "I don't know about that, but I'm learning!",
+                "Let me think about it..."
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+    </script>
+</head>
+<body class="animated-bg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
+    <header class="bg-gradient-to-r from-blue-600 to-blue-900 text-white p-4 text-center text-xl font-bold shadow-lg">
+        <nav class="flex justify-between items-center px-6">
+            <h1 class="text-yellow-300">City Hospital</h1>
+            <ul class="flex space-x-6">
+                <li><a href="#" onclick="showPage('home')" class="hover:text-yellow-300">Home</a></li>
+                <li><a href="#" onclick="showPage('about')" class="hover:text-yellow-300">About</a></li>
+                <li><a href="#" onclick="showPage('services')" class="hover:text-yellow-300">Services</a></li>
+                <li><a href="#" onclick="showPage('contact')" class="hover:text-yellow-300">Contact</a></li>
+                <li><a href="#" onclick="showPage('appointment')" class="hover:text-yellow-300">Appointment</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section id="home" class="page animated-bg bg-gradient-to-r from-green-400 to-teal-500 p-6 text-center h-screen flex flex-col justify-center items-center text-white">
+        <h1 class="text-5xl font-extrabold text-yellow-300">Your Health, Our Priority</h1>
+        <p class="mt-4 text-lg text-gray-200">Providing quality healthcare with experienced doctors and modern facilities.</p>
+        <a href="#" onclick="showPage('appointment')" class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg">Book an Appointment</a>
+    </section>
+    
+    <section id="about" class="page hidden static-bg bg-yellow-400 p-6 text-center">
+        <h2 class="text-4xl font-bold text-white">About Us</h2>
+        <p class="text-gray-200 mt-4">City Hospital has been serving the community with top-quality healthcare for over 20 years.</p>
+    </section>
+    
+    <section id="services" class="page hidden static-bg bg-red-400 p-6 text-center">
+        <h2 class="text-4xl font-bold text-white">Our Services</h2>
+        <ul class="text-gray-100 mt-4 list-disc list-inside">
+            <li>General Checkups</li>
+            <li>Specialist Consultations</li>
+            <li>Emergency Services</li>
+            <li>Laboratory Tests</li>
+            <li>24/7 Service</li>
+        </ul>
+
+        <!-- Chatbot Container -->
+        <div class="chat-container mt-8 mx-auto max-w-sm bg-white p-4 rounded-lg shadow-lg">
+            <div class="chat-box" id="chatBox">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Type a message..." class="p-2 border rounded w-4/5 text-black" />
+                <button onclick="sendMessage()" class="bg-blue-600 text-white p-2 rounded-r-lg">Send</button>
+            </div>
+        </div>
+    </section>
+    
+    <section id="contact" class="page hidden static-bg bg-purple-500 p-6 text-center">
+        <h2 class="text-4xl font-bold text-white">Contact Us</h2>
+        <p class="text-gray-200 mt-4">Phone: <a href="tel:+919951528872" class="text-yellow-300">+91 9951528872</a></p>
+        <p class="text-gray-200 mt-2">Email: <a href="mailto:vaishnu7070@gmail.com" class="text-yellow-300">vaishnu7070@gmail.com</a></p>
+    </section>
+    
+    <section id="appointment" class="page hidden animated-bg bg-gradient-to-r from-pink-500 to-purple-700 p-6 text-center">
+        <h2 class="text-4xl font-bold text-white">Book an Appointment</h2>
+        <!-- Form for booking an appointment using Formspree -->
+        <form action="https://formspree.io/f/xldjwnzg" method="POST" class="mt-4">
+            <input type="text" name="name" placeholder="Your Name" class="p-2 border rounded w-1/2 text-black" required><br><br>
+            <input type="email" name="email" placeholder="Your Email" class="p-2 border rounded w-1/2 text-black" required><br><br>
+            <input type="date" name="date" class="p-2 border rounded w-1/2 text-black" required><br><br>
+            <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-white px-6 py-2 rounded-lg shadow-lg">Submit</button>
+        </form>
+    </section>
+</body>
+</html>
+git remote add origin https://github.com/vaishnu13/city-hospital.git
+git branch -M main
+git push -u origin main
